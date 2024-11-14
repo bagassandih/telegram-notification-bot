@@ -35,10 +35,6 @@ app.post('/send', async (req, res) => {
       await bot.sendMessage(chatId.chat_id, text);
     }));
 
-    const date = new Date();
-    const formattedDate = date.toLocaleString('id-ID');
-    console.log(`[${formattedDate}] Notif sent..`);
-
     res.json({
       success: true,
       message: 'Message sent successfully',
