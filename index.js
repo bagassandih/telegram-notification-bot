@@ -1,53 +1,25 @@
-require('dotenv').config(); // Load environment variables
-const TelegramBot = require('node-telegram-bot-api');
+// Setup server
+require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
-const services = require('./services');
-
 const app = express();
 const port = process.env.PORT || 3000; 
+const cors = require('cors');
 
+// Import controllers
+const controllers = require('./controllers');
+
+// Use middleware
 app.use(cors());
 app.use(express.json());
 
+// Setup Bot
+const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 
-bot.onText(/\/start/, async (msg) => {
-  try {
-   await services.onStart(msg);
-  } catch (error) {
-    console.error(`An unexpected error occurred: ${error.message}`);
-  }
-});
-
-app.post('/send', async (req, res) => {
-  try {
-    const message = req.body?.message;
-    const typeMessage = req.body?.type;
-    const text = `[${typeMessage}]: ${message}`;
-
-    if (!typeMessage || !message) throw new Error('Need parameter message and type of message');
-
-    const listUsers = await services.onSend();
-
-    await Promise.all(listUsers.data.map(async chatId => {
-      await bot.sendMessage(chatId.chat_id, text);
-    }));
-
-    res.json({
-      success: true,
-      message: 'Message sent successfully',
-    });
-  } catch (error) {
-    console.error('Error sending message:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to send message',
-      error: error.message,
-    });
-  }
-});
+// list action and api routes
+bot.onText(/\/start/, controllers.onStartController);
+app.post('/send', controllers.sendMessageController);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
