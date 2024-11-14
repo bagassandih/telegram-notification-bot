@@ -38,7 +38,7 @@ async function onSend() {
     const listUsers = await supabase
         .from(tableChatId)
         .select('chat_id');
-    console.log('test');
+        
     if (!listUsers?.data) throw new Error('There are no users');
     return listUsers;
 }
