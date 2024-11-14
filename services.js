@@ -34,23 +34,12 @@ async function onStart(msg) {
     }
 }
 
-async function onSend(req) {
-    const message = req.body?.message;
-    const typeMessage = req.body?.type;
-    const text = `[${typeMessage}]: ${message}`;
-
+async function onSend() {
     const listUsers = await supabase
         .from(tableChatId)
         .select('chat_id');
-
     if (!listUsers?.data) throw new Error('There are no users');
-    if (!typeMessage || !message) throw new Error('Need parameter message and type of message');
-
-    await Promise.all(listUsers.data.forEach(async chatId => {
-        await bot.sendMessage(chatId.chat_id, text);
-    }));
-
-    return true;
+    return listUsers;
 }
 
 module.exports = {

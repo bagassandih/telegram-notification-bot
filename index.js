@@ -23,8 +23,22 @@ bot.onText(/\/start/, async (msg) => {
 
 app.post('/send', async (req, res) => {
   try {
-    const isDone = await services.onSend(req);
-    if (!isDone) throw new Error('message is undone');
+    const message = req.body?.message;
+    const typeMessage = req.body?.type;
+    const text = `[${typeMessage}]: ${message}`;
+
+    if (!typeMessage || !message) throw new Error('Need parameter message and type of message');
+
+    const listUsers = await services.onSend();
+
+    await Promise.all(listUsers.data.map(async chatId => {
+      await bot.sendMessage(chatId.chat_id, text);
+    }));
+
+    const date = new Date();
+    const formattedDate = date.toLocaleString('id-ID');
+    console.log(`[${formattedDate}] Notif sent..`);
+
     res.json({
       success: true,
       message: 'Message sent successfully',
