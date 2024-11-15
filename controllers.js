@@ -25,7 +25,7 @@ async function sendMessageController (req, res) {
 
     if (!typeMessage || !message) throw new Error("Need parameter message and type of message");
 
-    const listUsers = await services.getUsers();
+    const listUsers = await services.getAllUsers();
     if (!listUsers?.data) throw new Error('There are no users');
 
     await Promise.all(
