@@ -1,7 +1,9 @@
-const TelegramBot = require("node-telegram-bot-api");
+// import files
 const services = require("./services");
+const resources = require("./resources");
 
 // Menginisialisasi bot dengan token
+const TelegramBot = require("node-telegram-bot-api");
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 
@@ -10,7 +12,7 @@ async function onStartController(msg) {
   try {
     await services.onStart(msg);
   } catch (error) {
-    console.error(`An unexpected error occurred: ${error.message}`);
+    console.error(`Error on start: ${error.message}`);
   }
 }
 
@@ -21,26 +23,29 @@ async function sendMessageController (req, res) {
     const typeMessage = req.body?.type;
     const text = `[${typeMessage}]: ${message}`;
 
-    if (!typeMessage || !message)
-      throw new Error("Need parameter message and type of message");
+    if (!typeMessage || !message) throw new Error("Need parameter message and type of message");
 
-    const listUsers = await services.onSend();
+    const listUsers = await services.getUsers();
+    if (!listUsers?.data) throw new Error('There are no users');
 
     await Promise.all(
       listUsers.data.map(async (chatId) => {
-        await bot.sendMessage(chatId.chat_id, text);
+        try {
+          await bot.sendMessage(chatId.chat_id, text);
+          return true;
+        } catch (error) {
+          console.error(`${chatId.username} cannot send: ${error.message}`)
+          return false;
+        }
       })
     );
 
-    res.json({
-      success: true,
-      message: "Message sent successfully",
-    });
+    res.status(resources.successMessage.httpStatus).json(resources.successMessage);
   } catch (error) {
     console.error("Error sending message:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to send message",
+    res.status(resources.errorMessage.httpStatus).json({
+      success: resources.errorMessage.success,
+      message: resources.errorMessage.message,
       error: error.message,
     });
   }
