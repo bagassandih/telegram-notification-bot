@@ -40,12 +40,11 @@ async function sendMessageController (req, res) {
       })
     );
 
-    res.status(resources.successMessage.httpStatus).json(resources.successMessage);
+    res.status(resources.httpStatus.success).json(resources.successMessage);
   } catch (error) {
-    console.error("Error sending message:", error);
-    res.status(resources.errorMessage.httpStatus).json({
-      success: resources.errorMessage.success,
-      message: resources.errorMessage.message,
+    console.error("Error sending message:", error.message);
+    res.status(resources.httpStatus.error).json({
+      ...resources.errorMessage,
       error: error.message,
     });
   }
