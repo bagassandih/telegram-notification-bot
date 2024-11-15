@@ -1,5 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-const services = require("../services");
+const services = require("./services");
 
 // Menginisialisasi bot dengan token
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
