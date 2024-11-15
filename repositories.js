@@ -12,7 +12,7 @@ async function insertDataUser(chatId, username) {
       .insert({ chat_id: chatId, username: username });
   }
   
-  async function getDataUsers() {
+  async function getAllDataUsers() {
     return await supabase
       .from(tableChatId)
       .select("chat_id");
@@ -29,6 +29,6 @@ async function insertDataUser(chatId, username) {
 
   module.exports = {
     insertDataUser,
-    getDataUsers,
+    getAllDataUsers,
     checkExistingDataUsers,
   }

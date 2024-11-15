@@ -13,11 +13,11 @@ async function onStart(msg) {
   console.log(`Data ${username} inserted successfully`);
 }
 
-async function getUsers() {
-  return await repositories.getDataUsers();
+async function getAllUsers() {
+  return await repositories.getAllDataUsers();
 }
 
 module.exports = {
   onStart,
-  getUsers,
+  getAllUsers,
 };
