@@ -1,6 +1,6 @@
 // Setup supabase
 require('dotenv').config();
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
@@ -31,20 +31,16 @@ async function getAllDataUsers(typeMessage) {
 }
 
 // Repository for checking existing user before insert new user
-async function checkExistingDataUsers(chatId, username) {
-  const conditions = [];
+async function checkExistingDataUsers(chatId, username) {  
+  let query = supabase.from(tableChatId).select("chat_id, username");
 
-  if (chatId) conditions.push(['chat_id', '=', chatId]);
-  if (username) conditions.push(['username', '=', username]);
+  if (chatId) query = query.eq("chat_id", chatId);
+  if (username) query = query.eq("username", username);
 
-  const query = supabase
-    .from(tableChatId)
-    .select('chat_id, username')
-    .and(...conditions);
   return await query.maybeSingle();
 }
 
-export default {
+module.exports = {
   insertDataUser,
   getAllDataUsers,
   checkExistingDataUsers,
