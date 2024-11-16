@@ -10,6 +10,10 @@
   "errorMessage": {
     "success": false,
     "message": "Failed to send message"
+  },
+  "listFeatures": {
+    "autoFaucet": true,
+    "dukunCuaca": false
   }
 }
   

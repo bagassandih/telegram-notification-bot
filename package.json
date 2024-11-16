@@ -1,8 +1,8 @@
 {
-  "name": "mailjet",
+  "name": "telegram-notificatoin-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "mailjet.js",
+  "main": "app.js",
   "dependencies": {
     "@supabase/supabase-js": "^2.46.1",
     "cors": "^2.8.5",

@@ -13,8 +13,8 @@ async function onStart(msg) {
   console.log(`Data ${username} inserted successfully`);
 }
 
-async function getAllUsers() {
-  return await repositories.getAllDataUsers();
+async function getAllUsers(typeMessage) {
+  return await repositories.getAllDataUsers(typeMessage);
 }
 
 module.exports = {
