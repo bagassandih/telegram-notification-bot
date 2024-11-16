@@ -2,12 +2,12 @@
 const services = require('./services');
 const resources = require('./resources');
 
-// Menginisialisasi bot dengan token
+// bot setup
 const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 
-// Handler untuk perintah /start
+// Handler for /start commands
 async function onStartController(msg) {
   try {
     await services.onStart(msg);
@@ -16,7 +16,7 @@ async function onStartController(msg) {
   }
 }
 
-// Handler untuk mengirim pesan ke pengguna
+// Handler for send messages
 async function sendMessageController (req, res) {
   try {
     const message = req.body?.message;
