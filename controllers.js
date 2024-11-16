@@ -9,10 +9,9 @@ const bot = new TelegramBot(telegramBotToken, { polling: true });
 
 // Handler for /start commands
 async function onStartController(msg) {
-  console.log('11');
   try {
-    console.log(`22`);
     await services.onStart(msg);
+    await bot.sendMessage(msg.chat.id, `Welcome to testing mode, ${msg.from.username}!`);
   } catch (error) {
     console.error(`Error on start: ${error.message}`);
   }

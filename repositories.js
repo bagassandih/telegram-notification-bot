@@ -33,7 +33,6 @@ async function getAllDataUsers(typeMessage) {
 
 // Repository for checking existing user before insert new user
 async function checkExistingDataUsers(chatId, username) {  
-  console.log('44')
   let query = supabase.from(tableChatId).select("chat_id, username");
 
   if (chatId) query = query.eq("chat_id", chatId);
