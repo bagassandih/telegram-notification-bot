@@ -7,7 +7,7 @@ async function onStart(msg) {
   const chatId = msg.chat.id;
   const username = msg.from.username;
   const settings = resources.listFeatures;
-
+  console.log('33')
   const { data, error: selectError } = await repositories.checkExistingDataUsers(chatId, username);
   if (selectError) throw new Error(`${selectError.message}`);
   if (data) throw new Error(`${username} already exists`);  
