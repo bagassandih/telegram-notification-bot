@@ -9,7 +9,6 @@ const tableChatId = process.env.TABLE_NAME_CHAT_ID;
 
 // Repository for inserting new user
 async function insertDataUser(chatId, username, settings) {
-  console.log('Inserting');
   return await supabase
     .from('chat_ids_telegram')
     .insert({ chat_id: chatId, username: username, settings: settings});

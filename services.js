@@ -4,7 +4,6 @@ const resources = require('./resources.json');
 
 // Service for /start commands
 async function onStart(msg) {
-  console.log(`Start command received from ${msg.from.username}`);
   const chatId = msg.chat.id;
   const username = msg.from.username;
   const settings = resources.listFeatures;
