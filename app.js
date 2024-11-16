@@ -17,10 +17,11 @@ const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 
-// list action and api routes
+// List action and api routes
 bot.onText(/\/start/, controllers.onStartController);
 app.post('/send', controllers.sendMessageController);
 
+// Run the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });

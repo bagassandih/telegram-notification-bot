@@ -1,4 +1,4 @@
-// setup supabase
+// Setup supabase
 require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
 const supabase = createClient(
@@ -7,14 +7,14 @@ const supabase = createClient(
 );
 const tableChatId = process.env.TABLE_NAME_CHAT_ID;
 
-// repository for inserting new user
+// Repository for inserting new user
 async function insertDataUser(chatId, username) {
   return await supabase
     .from('chat_ids_telegram')
     .insert({ chat_id: chatId, username: username });
 }
 
-// repository for getting all data users based on type message
+// Repository for getting all data users based on type message
 async function getAllDataUsers(typeMessage) {
   const settingMap = {
     'Auto Faucet': 'autoFaucet',
@@ -30,7 +30,7 @@ async function getAllDataUsers(typeMessage) {
     .eq(`settings->>${settingType}`, 'true');
 }
 
-// repository for checking existing user before insert new user
+// Repository for checking existing user before insert new user
 async function checkExistingDataUsers(chatId, username) {  
     let query = supabase.from(tableChatId).select('chat_id, username');
 

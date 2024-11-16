@@ -1,8 +1,8 @@
-// import files
+// Import files
 const services = require('./services');
 const resources = require('./resources');
 
-// bot setup
+// Bot setup
 const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });

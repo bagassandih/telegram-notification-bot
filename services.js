@@ -1,6 +1,6 @@
 const repositories = require('./repositories');
 
-// service for /start commands
+// Service for /start commands
 async function onStart(msg) {
   const chatId = msg.chat.id;
   const username = msg.from.username;
@@ -14,7 +14,7 @@ async function onStart(msg) {
   console.log(`Data ${username} inserted successfully`);
 }
 
-// service for getting data chatIds user based on type of message
+// Service for getting data chatIds user based on type of message
 async function getAllUsers(typeMessage) {
   return await repositories.getAllDataUsers(typeMessage);
 }
