@@ -8,10 +8,10 @@ const supabase = createClient(
 const tableChatId = process.env.TABLE_NAME_CHAT_ID;
 
 // Repository for inserting new user
-async function insertDataUser(chatId, username) {
+async function insertDataUser(chatId, username, settings) {
   return await supabase
     .from('chat_ids_telegram')
-    .insert({ chat_id: chatId, username: username });
+    .insert({ chat_id: chatId, username: username, settings: settings});
 }
 
 // Repository for getting all data users based on type message

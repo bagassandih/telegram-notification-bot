@@ -1,15 +1,18 @@
+// Import files
 const repositories = require('./repositories');
+const resources = require('./resources.json');
 
 // Service for /start commands
 async function onStart(msg) {
   const chatId = msg.chat.id;
   const username = msg.from.username;
+  const settings = resources.listFeatures;
 
   const { data, error: selectError } = await repositories.checkExistingDataUsers(chatId, username);
   if (selectError) throw new Error(`${selectError.message}`);
   if (data) throw new Error(`${username} already exists`);  
   
-  await repositories.insertDataUser(chatId, username);
+  await repositories.insertDataUser(chatId, username, settings);
 
   console.log(`Data ${username} inserted successfully`);
 }
