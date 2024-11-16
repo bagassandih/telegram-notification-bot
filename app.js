@@ -1,19 +1,19 @@
 // Setup server
 require('dotenv').config();
-const express = require('express');
+import express, { json } from 'express';
+import cors from 'cors';
 const app = express();
 const port = process.env.PORT || 3000; 
-const cors = require('cors');
 
 // Import controllers
-const controllers = require('./controllers');
+import controllers from './controllers';
 
 // Use middleware
 app.use(cors());
-app.use(express.json());
+app.use(json());
 
 // Setup Bot
-const TelegramBot = require('node-telegram-bot-api');
+import TelegramBot from 'node-telegram-bot-api';
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 

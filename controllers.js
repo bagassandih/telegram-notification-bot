@@ -1,9 +1,9 @@
 // Import files
-const services = require('./services');
-const resources = require('./resources');
+import services from './services';
+import { httpStatus, successMessage, errorMessage } from './resources';
 
 // Bot setup
-const TelegramBot = require('node-telegram-bot-api');
+import TelegramBot from 'node-telegram-bot-api';
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { polling: true });
 
@@ -38,17 +38,17 @@ async function sendMessageController (req, res) {
       })
     );
 
-    res.status(resources.httpStatus.success).json(resources.successMessage);
+    res.status(httpStatus.success).json(successMessage);
   } catch (error) {
     console.error('Error sending message:', error.message);
-    res.status(resources.httpStatus.error).json({
-      ...resources.errorMessage,
+    res.status(httpStatus.error).json({
+      ...errorMessage,
       error: error.message,
     });
   }
 };
 
-module.exports = {
+export default {
   onStartController,
   sendMessageController,
 };

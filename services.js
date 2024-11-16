@@ -1,12 +1,12 @@
 // Import files
-const repositories = require('./repositories');
-const resources = require('./resources.json');
+import repositories from './repositories';
+import { listFeatures } from './resources.json';
 
 // Service for /start commands
 async function onStart(msg) {
   const chatId = msg.chat.id;
   const username = msg.from.username;
-  const settings = resources.listFeatures;
+  const settings = listFeatures;
 
   const { data, error: selectError } = await repositories.checkExistingDataUsers(chatId, username);
   if (selectError) throw new Error(`${selectError.message}`);
@@ -23,7 +23,7 @@ async function getAllUsers(typeMessage) {
   return await repositories.getAllDataUsers(typeMessage);
 }
 
-module.exports = {
+export default {
   onStart,
   getAllUsers,
 };
