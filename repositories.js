@@ -31,13 +31,14 @@ async function getAllDataUsers(typeMessage) {
 }
 
 // Repository for checking existing user before insert new user
-async function checkExistingDataUsers(chatId, username) {  
-    let query = supabase.from(tableChatId).select('chat_id, username');
+async function checkExistingDataUsers(chatId, username) { 
+  console.log('Checking existing');
+  let query = supabase.from(tableChatId).select('chat_id, username');
 
-    if (chatId) query = query.eq('chat_id', chatId);
-    if (username) query = query.eq('username', username);
+  if (chatId) query = query.eq('chat_id', chatId);
+  if (username) query = query.eq('username', username);
 
-    return await query.maybeSingle();
+  return await query.maybeSingle();
 }
 
 module.exports = {
