@@ -11,7 +11,7 @@ async function onStart(msg) {
   const { data, error: selectError } = await repositories.checkExistingDataUsers(chatId, username);
   if (selectError) throw new Error(`${selectError.message}`);
   if (data) throw new Error(`${username} already exists`);  
-  
+  console.log('55')
   await repositories.insertDataUser(chatId, username, settings);
 
   console.log(`Data ${username} inserted successfully`);
