@@ -18,13 +18,13 @@ async function getAllDataUsers() {
     .select("chat_id");
 }
 
-async function checkExistingDataUsers(chatId, username) {
-  return await supabase
-    .from(tableChatId)
-    .select("chat_id, username")
-    .eq("chat_id", chatId)
-    .eq("username", username)
-    .single();
+async function checkExistingDataUsers(chatId, username) {  
+    let query = supabase.from(tableChatId).select("chat_id, username");
+
+    if (chatId) query = query.eq("chat_id", chatId);
+    if (username) query = query.eq("username", username);
+
+    return await query.maybeSingle();
 }
 
 module.exports = {
