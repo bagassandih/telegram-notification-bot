@@ -12,7 +12,7 @@ const controllers = require('./controllers');
 app.use(cors());
 app.use(express.json());
 
-// Setup Bot
+// Setup bot telegram
 const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken);
