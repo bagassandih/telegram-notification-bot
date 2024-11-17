@@ -2,15 +2,27 @@
 const services = require('./services');
 const resources = require('./resources');
 
-// Handler for /start commands
-async function onStartController(bot, msg) {
+// Handler for webhook
+async function webHookController(bot, req, res) {
   try {
-    await bot.sendMessage(msg.chat.id, `Welcome to testing mode, ${msg.from.username}!`);
-    await services.onStart(msg);
+    const { message } = req.body;
+    if (!message) return res.sendStatus(200);
+    
+    // Handle /start command
+    if (message.text === '/start') {
+      await bot.sendMessage(message.chat.id, `Welcome to testing mode, ${message.from.username}!`);
+      await services.onStart(message);
+    }
+    
+    res.status(resources.httpStatus.success).json(resources.succesStart);
   } catch (error) {
-    console.error(`Error on start: ${error.message}`);
+      console.error('Error handling webhook:', error);
+      res.status(resources.httpStatus.error).json({
+        ...resources.errorMessage,
+        error: error.message,
+      });
   }
-}
+};
 
 // Handler for send messages
 async function sendMessageController (bot, req, res) {
@@ -45,6 +57,6 @@ async function sendMessageController (bot, req, res) {
 };
 
 module.exports = {
-  onStartController,
   sendMessageController,
+  webHookController
 };

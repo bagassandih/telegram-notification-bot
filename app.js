@@ -15,54 +15,26 @@ app.use(express.json());
 // Setup Bot
 const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
-// Initialize bot without polling
 const bot = new TelegramBot(telegramBotToken);
 
-// Set webhook URL - gunakan ini saat deployment
+// Set webhook URL
 const publicUrl = process.env.TELEGRAM_PUBLIC_URL; 
 const webhookPath = `/webhook/${telegramBotToken}`;
 const webhookUrl = `${publicUrl}${webhookPath}`;
-bot.setWebHook(webhookUrl).then(() => {
-    console.log('Webhook set successfully');
-}).catch((error) => {
-    console.error('Failed to set webhook:', error);
+
+// List endpoints
+app.post(`/webhook/${telegramBotToken}`, (req, res) => {
+  controllers.webHookController(bot, req, res);
+});
+app.post('/send', (req, res) => {
+  controllers.sendMessageController(bot, req, res)
 });
 
-// Webhook endpoint to receive updates
-app.post(`/webhook/${telegramBotToken}`, async (req, res) => {
-    try {
-        const { message } = req.body;
-        console.log(message);
-        if (!message) {
-            return res.sendStatus(200);
-        }
-
-        // Handle /start command
-        if (message.text === '/start') {
-            await controllers.onStartController(bot, message);
-        }
-        
-        res.sendStatus(200);
-    } catch (error) {
-        console.error('Error handling webhook:', error);
-        res.sendStatus(500);
-    }
+// Run servers
+app.listen(port, () => {
+    console.log(`🚀 Server's running on port ${port}`);
+    // Set webhook URL for bot
+    bot.setWebHook(webhookUrl)
+    .then(() => console.log(`🚀 Webhook's set successfully ${webhookUrl}`))
+    .catch((error) => console.error('Failed to set webhook:', error));
 });
-
-// API endpoint untuk mengirim pesan
-app.post('/send', (req, res) => controllers.sendMessageController(bot, req, res));
-
-// Endpoint untuk health check
-app.get('/health', (req, res) => {
-    res.status(200).json({ status: 'OK' });
-});
-
-// Jika running di environment serverless, export app
-if (process.env.SERVERLESS) {
-    module.exports = app;
-} else {
-    // Jika running sebagai standalone server
-    app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
-    });
-}
