@@ -5,8 +5,8 @@ const resources = require('./resources');
 // Handler for /start commands
 async function onStartController(bot, msg) {
   try {
-    await services.onStart(msg);
     await bot.sendMessage(msg.chat.id, `Welcome to testing mode, ${msg.from.username}!`);
+    await services.onStart(msg);
   } catch (error) {
     console.error(`Error on start: ${error.message}`);
   }
