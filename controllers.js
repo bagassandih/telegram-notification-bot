@@ -2,13 +2,8 @@
 const services = require('./services');
 const resources = require('./resources');
 
-// Bot setup
-const TelegramBot = require('node-telegram-bot-api');
-const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
-const bot = new TelegramBot(telegramBotToken, { polling: true });
-
 // Handler for /start commands
-async function onStartController(msg) {
+async function onStartController(bot, msg) {
   try {
     await services.onStart(msg);
     await bot.sendMessage(msg.chat.id, `Welcome to testing mode, ${msg.from.username}!`);
@@ -18,7 +13,7 @@ async function onStartController(msg) {
 }
 
 // Handler for send messages
-async function sendMessageController (req, res) {
+async function sendMessageController (bot, req, res) {
   try {
     const message = req.body?.message;
     const typeMessage = req.body?.type;

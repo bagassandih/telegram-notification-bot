@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3000;
 
 // Import controllers
 const controllers = require('./controllers');
@@ -15,28 +15,54 @@ app.use(express.json());
 // Setup Bot
 const TelegramBot = require('node-telegram-bot-api');
 const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
-const bot = new TelegramBot(telegramBotToken, { webHook: true });
+// Initialize bot without polling
+const bot = new TelegramBot(telegramBotToken);
 
-// Set webhook URL
-const publicUrl = process.env.TELEGRAM_PUBLIC_URL; //
+// Set webhook URL - gunakan ini saat deployment
+const publicUrl = process.env.TELEGRAM_PUBLIC_URL; 
 const webhookPath = `/webhook/${telegramBotToken}`;
 const webhookUrl = `${publicUrl}${webhookPath}`;
-
 bot.setWebHook(webhookUrl).then(() => {
-    console.log(`Webhook set to: ${webhookUrl}`);
+    console.log('Webhook set successfully');
+}).catch((error) => {
+    console.error('Failed to set webhook:', error);
 });
 
-// List action and API routes
-app.post(webhookPath, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
+// Webhook endpoint to receive updates
+app.post(`/webhook/${telegramBotToken}`, async (req, res) => {
+    try {
+        const { message } = req.body;
+        console.log(message);
+        if (!message) {
+            return res.sendStatus(200);
+        }
+
+        // Handle /start command
+        if (message.text === '/start') {
+            await controllers.onStartController(bot, message);
+        }
+        
+        res.sendStatus(200);
+    } catch (error) {
+        console.error('Error handling webhook:', error);
+        res.sendStatus(500);
+    }
 });
 
-// List action and api routes
-bot.onText(/\/start/, controllers.onStartController);
-app.post('/send', controllers.sendMessageController);
+// API endpoint untuk mengirim pesan
+app.post('/send', (req, res) => controllers.sendMessageController(bot, req, res));
 
-// Run the server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+// Endpoint untuk health check
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'OK' });
 });
+
+// Jika running di environment serverless, export app
+if (process.env.SERVERLESS) {
+    module.exports = app;
+} else {
+    // Jika running sebagai standalone server
+    app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
