@@ -13,7 +13,7 @@ async function onStart(bot, msg) {
   if (data) throw new Error(`${username} already exists`);  
   
   await repositories.insertDataUser(chatId, username, settings);
-  await bot.sendMessage(message.chat.id, `Welcome to San Asisstant BOT, ${message.from.username}!`);
+  await bot.sendMessage(chatId, `Welcome to San Asisstant BOT, ${username}!`);
 
   console.log(`Data ${username} inserted successfully`);
 }
