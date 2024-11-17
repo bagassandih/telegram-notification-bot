@@ -16,7 +16,7 @@ async function webHookController(bot, req, res) {
     
     res.status(resources.httpStatus.success).json(resources.succesStart);
   } catch (error) {
-      console.error('Error handling webhook:', error);
+      console.error(error);
       res.status(resources.httpStatus.error).json({
         ...resources.errorMessage,
         error: error.message,
