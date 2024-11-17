@@ -18,7 +18,7 @@ const telegramBotToken = process.env.TELEGRAM_BOT_TOKEN;
 const bot = new TelegramBot(telegramBotToken, { webHook: true });
 
 // Set webhook URL
-const publicUrl = process.env.PUBLIC_URL; //
+const publicUrl = process.env.TELEGRAM_PUBLIC_URL; //
 const webhookPath = `/webhook/${telegramBotToken}`;
 const webhookUrl = `${publicUrl}${webhookPath}`;
 
