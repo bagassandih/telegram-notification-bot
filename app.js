@@ -33,9 +33,9 @@ app.post('/send', (req, res) => {
 // Run servers
 app.listen(port, () => {
     console.log(`🚀 Server's running on port ${port}`);
-    
+
     // Set webhook URL for bot
     bot.setWebHook(webhookUrl)
-    .then(() => console.log(`🚀 Webhook's set successfully ${webhookUrl}`))
-    .catch((error) => console.error('Failed to set webhook:', error));
+      .then(() => console.log(`🚀 Webhook's set successfully ${webhookUrl}`))
+      .catch((error) => console.error('Failed to set webhook:', error));
 });
