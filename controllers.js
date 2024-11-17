@@ -11,13 +11,10 @@ async function webHookController(bot, req, res) {
     // Handle /start command
     if (message.text === '/start') await services.onStart(bot, message);
     
-    res.status(resources.httpStatus.success).json(resources.succesStart);
+    res.sendStatus(resources.httpStatus.success);
   } catch (error) {
       console.error(error);
-      res.status(resources.httpStatus.error).json({
-        ...resources.errorMessage,
-        error: error.message,
-      });
+      res.sendStatus(resources.httpStatus.error);
   }
 };
 
