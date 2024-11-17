@@ -9,11 +9,7 @@ async function webHookController(bot, req, res) {
     if (!message) return res.sendStatus(200);
     
     // Handle /start command
-    if (message.text === '/start') {
-      await bot.sendMessage(message.chat.id, `Welcome to testing mode, ${message.from.username}!`);
-      await services.onStart(message);
-      console.log(`Welcome message sent to: ${message.from.username}!`);
-    }
+    if (message.text === '/start') await services.onStart(bot, message);
     
     res.status(resources.httpStatus.success).json(resources.succesStart);
   } catch (error) {

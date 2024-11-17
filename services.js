@@ -3,7 +3,7 @@ const repositories = require('./repositories');
 const resources = require('./resources.json');
 
 // Service for /start commands
-async function onStart(msg) {
+async function onStart(bot, msg) {
   const chatId = msg.chat.id;
   const username = msg.from.username;
   const settings = resources.listFeatures;
@@ -13,6 +13,7 @@ async function onStart(msg) {
   if (data) throw new Error(`${username} already exists`);  
   
   await repositories.insertDataUser(chatId, username, settings);
+  await bot.sendMessage(message.chat.id, `Welcome to San Asisstant BOT, ${message.from.username}!`);
 
   console.log(`Data ${username} inserted successfully`);
 }
