@@ -12,6 +12,7 @@ async function webHookController(bot, req, res) {
     if (message.text === '/start') {
       await bot.sendMessage(message.chat.id, `Welcome to testing mode, ${message.from.username}!`);
       await services.onStart(message);
+      console.log(`Welcome message sent to: ${message.from.username}!`);
     }
     
     res.status(resources.httpStatus.success).json(resources.succesStart);
