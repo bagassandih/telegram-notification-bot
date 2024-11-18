@@ -8,10 +8,10 @@ const supabase = createClient(
 const tableChatId = process.env.TABLE_NAME_CHAT_ID;
 
 // Repository for inserting new user
-async function insertDataUser(chatId, username, settings) {
+async function insertDataUser(chatId, username, settings, location) {
   return await supabase
     .from('chat_ids_telegram')
-    .insert({ chat_id: chatId, username: username, settings: settings});
+    .insert({ chat_id: chatId, username: username, settings: settings, location: location});
 }
 
 // Repository for getting all data users based on type message
@@ -30,6 +30,14 @@ async function getAllDataUsers(typeMessage) {
     .eq(`settings->>${settingType}`, 'true');
 }
 
+// Repository for update users
+async function updateDataUser(chatId, username, location) {
+  return await supabase
+    .from('chat_ids_telegram')
+    .update({ location: location })
+    .eq('chat_id', chatId)
+    .eq('username', username);
+}
 // Repository for checking existing user before insert new user
 async function checkExistingDataUsers(chatId, username) {  
   let query = supabase.from(tableChatId).select("chat_id, username");
@@ -44,4 +52,5 @@ module.exports = {
   insertDataUser,
   getAllDataUsers,
   checkExistingDataUsers,
+  updateDataUser
 };

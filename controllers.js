@@ -8,13 +8,27 @@ async function webHookController(bot, req, res) {
     const { message } = req.body;
     if (!message) return res.sendStatus(200);
     
+    console.log(message.text);
     // Handle /start command
     if (message.text === '/start') await services.onStart(bot, message);
+    if (message.text === '/set_location') await services.requestLocation(bot, message);
     
     res.sendStatus(resources.httpStatus.success);
   } catch (error) {
       console.error(error);
       res.sendStatus(resources.httpStatus.error);
+  }
+};
+
+async function setLocationController(bot) {
+  try {
+    bot.on('location', async (msg) => {
+      await services.setLocation(msg);
+      res.sendStatus(resources.httpStatus.success);
+  });
+  } catch (error) {
+    console.error(`Error set location: ${error}`);
+    res.sendStatus(resources.httpStatus.error);
   }
 };
 
@@ -52,5 +66,6 @@ async function sendMessageController (bot, req, res) {
 
 module.exports = {
   sendMessageController,
-  webHookController
+  webHookController,
+  setLocationController
 };
