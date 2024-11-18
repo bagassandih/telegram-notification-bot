@@ -30,9 +30,6 @@ app.post('/send', (req, res) => {
   controllers.sendMessageController(bot, req, res)
 });
 
-// Handler or listeners for event from bot
-controllers.setLocationController(bot);
-
 // Run servers
 app.listen(port, () => {
     console.log(`🚀 Server's running on port ${port}`);
