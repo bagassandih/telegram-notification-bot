@@ -8,9 +8,9 @@ async function webHookController(bot, req, res) {
     const { message } = req.body;
     if (!message) return res.sendStatus(200);
 
+    console.log(message);
     // Handle commands
     if (message.text === '/start') await services.onStart(bot, message);
-
     // Handle locations
     if (message.text === '/set_location') await services.requestLocation(bot, message);
     if (message.location) await services.setLocation(bot, message);
