@@ -8,12 +8,15 @@ async function onStart(bot, msg) {
   const username = msg.from.username;
   const settings = resources.listFeatures;
   const location = resources.locationDefault;
+  
+  let text = `Welcome, ${username}!👋🏻 \n\n`;
+  text += `Let's set up your location to activate features of Dukun Cuaca!🌤️ \n\n`;
+  text += `use /set_location to setup your location.`;
 
-  const { data, error: selectError } = await repositories.checkExistingDataUsers(chatId, username);
-  if (selectError) throw new Error(`${selectError.message}`);
-  if (data) throw new Error(`${username} already exists`);  
+  const { data } = await repositories.checkExistingDataUsers(chatId, username);
+  if (data) return console.log(`${username} already exists`);  
 
-  await bot.sendMessage(chatId, `Welcome, ${username}!`);
+  await bot.sendMessage(chatId, text);
   await repositories.insertDataUser(chatId, username, settings, location);
 
   console.log(`Data ${username} inserted successfully`);
@@ -26,10 +29,9 @@ async function setLocation(bot, msg) {
   const location = { longitude: msg.location.longitude, latitude: msg.location.latitude };
 
   // Set text for message
-  let text = `Your location has been successfully saved! 🎉\n\n`;
-  text += `📍 *Your Location Details:*\n`;
+  let text = `📍 *Your Location Details:*\n`;
   text += `- Latitude: ${location.latitude}\n- Longitude: ${location.longitude}\n\n`;
-  text += `Thank you for sharing your location. We'll use it to provide you with accurate weather updates! 🌦️`;
+  text += `Nice ${username}, we'll use it to provide you with our features!`;
 
   await bot.sendMessage(chatId, text, { parse_mode: 'Markdown'});
   await repositories.updateDataUser(chatId, username, location );
@@ -40,16 +42,27 @@ async function setLocation(bot, msg) {
 // Service for requesting location
 async function requestLocation(bot, msg) {
   const chatId = msg.chat.id;
-  await bot.sendMessage(chatId, "Let's set up your location to get accurate weather updates! 🌦️\n\nTap the button below to share your location:", {
-    reply_markup: {
-        keyboard: [
-            [{ text: "📍 Share My Location" }]
-        ],
-        resize_keyboard: true,
-        one_time_keyboard: true
-    }
+
+  const buttonText = `📍 Share My Location`;
+  const text = `Tap the button "${buttonText}" below to share your location:`;
+
+  await bot.sendMessage(chatId, text, {
+      reply_markup: {
+          keyboard: [
+              [
+                  {
+                      text: buttonText,
+                      request_location: true
+                  }
+              ]
+          ],
+          resize_keyboard: true,
+          one_time_keyboard: true
+      }
   });
 }
+
+
 
 // Service for getting data chatIds user based on type of message
 async function getAllUsers(typeMessage) {

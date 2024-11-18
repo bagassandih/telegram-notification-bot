@@ -38,6 +38,7 @@ async function updateDataUser(chatId, username, location) {
     .eq('chat_id', chatId)
     .eq('username', username);
 }
+
 // Repository for checking existing user before insert new user
 async function checkExistingDataUsers(chatId, username) {  
   let query = supabase.from(tableChatId).select("chat_id, username");
