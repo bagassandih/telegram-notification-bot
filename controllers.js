@@ -5,15 +5,18 @@ const resources = require('./resources');
 // Handler for webhook
 async function webHookController(bot, req, res) {
   try {
-    const { message } = req.body;
-    if (!message) return res.sendStatus(200);
+    const { message, callback_query } = req.body;
 
     // Handle onstart events
-    if (message.text === '/start') await services.onStart(bot, message);
-    
+    if (message?.text === '/start') await services.onStart(bot, message);
+
     // Handle locations events
-    if (message.text === '/set_location') await services.requestLocation(bot, message);
-    if (message.location) await services.setLocation(bot, message);
+    if (message?.text === '/set_location') await services.requestLocation(bot, message);
+    if (message?.location) await services.setLocation(bot, message);
+    if (callback_query?.data === 'set_location' && callback_query?.message) {
+      await bot.answerCallbackQuery(callback_query.id, { text: 'Processing the request...' });
+      await services.requestLocation(bot, callback_query.message);
+    }; 
 
     res.sendStatus(resources.httpStatus.success);
   } catch (error) {

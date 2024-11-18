@@ -11,13 +11,27 @@ async function onStart(bot, msg) {
   
   let text = `Welcome, ${username}!👋🏻 \n\n`;
   text += `Let's set up your location to activate features of Dukun Cuaca!🌤️ \n\n`;
-  text += `use /set_location to setup your location.`;
+  // text += `use /set_location to setup your location.`;
+  const options = {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          {
+            text: 'Setup Location',
+            callback_data: 'set_location',
+          }
+        ]
+      ],
+      resize_keyboard: true,
+      one_time_keyboard: true
+    }
+  };
 
   const { data } = await repositories.checkExistingDataUsers(chatId, username);
   if (data) return console.log(`${username} already exists`);  
 
-  await bot.sendMessage(chatId, text);
-  await repositories.insertDataUser(chatId, username, settings, location);
+  await bot.sendMessage(chatId, text, options);
+  // await repositories.insertDataUser(chatId, username, settings, location);
 
   console.log(`Data ${username} inserted successfully`);
 }
@@ -44,25 +58,23 @@ async function requestLocation(bot, msg) {
   const chatId = msg.chat.id;
 
   const buttonText = `📍 Share My Location`;
-  const text = `Tap the button "${buttonText}" below to share your location:`;
+  const text = `Tap the button "${buttonText}" below to continue`;
 
   await bot.sendMessage(chatId, text, {
       reply_markup: {
           keyboard: [
               [
-                  {
-                      text: buttonText,
-                      request_location: true
-                  }
+                {
+                  text: buttonText,
+                  request_location: true,
+                }
               ]
           ],
           resize_keyboard: true,
-          one_time_keyboard: true
+          one_time_keyboard: true,
       }
   });
 }
-
-
 
 // Service for getting data chatIds user based on type of message
 async function getAllUsers(typeMessage) {
