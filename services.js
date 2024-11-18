@@ -31,7 +31,7 @@ async function onStart(bot, msg) {
   if (data) return console.log(`${username} already exists`);  
 
   await bot.sendMessage(chatId, text, options);
-  // await repositories.insertDataUser(chatId, username, settings, location);
+  await repositories.insertDataUser(chatId, username, settings, location);
 
   console.log(`Data ${username} inserted successfully`);
 }
