@@ -21,6 +21,7 @@ async function webHookController(bot, req, res) {
 };
 
 async function setLocationController(bot) {
+  console.log('location listener');
   try {
     bot.on('location', async (msg) => {
       await services.setLocation(msg);
