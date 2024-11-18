@@ -1,6 +1,6 @@
 // Import files
-const services = require("./services");
-const resources = require("./resources");
+const services = require('./services');
+const resources = require('./resources');
 
 // Handler for webhook
 async function webHookController(bot, req, res) {
@@ -9,8 +9,8 @@ async function webHookController(bot, req, res) {
     if (!message) return res.sendStatus(200);
 
     // Handle commands
-    if (message.text === "/start") await services.onStart(bot, message);
-    if (message.text === "/set_location") await services.requestLocation(bot, message);
+    if (message.text === '/start') await services.onStart(bot, message);
+    if (message.text === '/set_location') await services.requestLocation(bot, message);
 
     res.sendStatus(resources.httpStatus.success);
   } catch (error) {
@@ -20,9 +20,9 @@ async function webHookController(bot, req, res) {
 }
 
 async function setLocationController(bot) {
-  console.log("location listener");
+  console.log('location listener');
   try {
-    await bot.on("location", async (msg) => {
+    await bot.on('location', async (msg) => {
     await services.setLocation(msg);
     res.sendStatus(resources.httpStatus.success);
     });
@@ -39,10 +39,10 @@ async function sendMessageController(bot, req, res) {
     const typeMessage = req.body?.type;
     const text = `[${typeMessage}]: ${message}`;
 
-    if (!typeMessage || !message) throw new Error("Need parameter message and type of message");
+    if (!typeMessage || !message) throw new Error('Need parameter message and type of message');
 
     const listUsers = await services.getAllUsers(typeMessage);
-    if (!listUsers?.data) throw new Error("There are no users");
+    if (!listUsers?.data) throw new Error('There are no users');
 
     await Promise.all(
       listUsers.data.map(async (chatId) => {
@@ -56,7 +56,7 @@ async function sendMessageController(bot, req, res) {
 
     res.status(resources.httpStatus.success).json(resources.successMessage);
   } catch (error) {
-    console.error("Error sending message:", error.message);
+    console.error('Error sending message:', error.message);
     res.status(resources.httpStatus.error).json({
       ...resources.errorMessage,
       error: error.message,
