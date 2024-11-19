@@ -1,21 +1,20 @@
 // Import files
-const services = require('../services');
+const telegramBotServices = require('../services/telegramBotServices');
+const userServices = require('../services/userServices');
 const resources = require('../resources');
 
 // Handler for webhook
 async function webHookController(bot, req, res) {
   try {
     const { message, callback_query } = req.body;
-
     // Handle onstart events
-    if (message?.text === '/start') await services.onStart(bot, message);
-
+    if (message?.text === '/start') await telegramBotServices.onStart(bot, message);
     // Handle locations events
-    if (message?.text === '/set_location') await services.requestLocation(bot, message);
-    if (message?.location) await services.setLocation(bot, message);
+    if (message?.location) await userServices.setLocation(bot, message);
+    if (message?.text === '/set_location') await userServices.requestLocation(bot, message);
     if (callback_query?.data === 'set_location' && callback_query?.message) {
       await bot.answerCallbackQuery(callback_query.id, { text: 'Processing the request...' });
-      await services.requestLocation(bot, callback_query.message);
+      await userServices.requestLocation(bot, callback_query.message);
     }; 
 
     res.sendStatus(resources.httpStatus.success);
@@ -33,7 +32,7 @@ async function sendMessageController(bot, req, res) {
 
     if (!typeMessage || !message) throw new Error('Need parameter message and type of message');
 
-    const listUsers = await services.getAllUsers(typeMessage);
+    const listUsers = await userServices.getAllUsers(typeMessage);
     if (!listUsers?.data) throw new Error('There are no users');
 
     await Promise.all(

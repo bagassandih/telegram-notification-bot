@@ -1,16 +1,17 @@
-const services = require('../services');
+const dukunCuacaServices = require('../services/dukunCuacaServices');
+const userServices = require('../services/userServices');
 const utilities = require('../utilities');
 const resources = require('../resources.json');
 
 async function dukunCuacaController(bot, req, res) {
   try {
-    const listUsers = await services.getAllUsers('Dukun Cuaca');
+    const listUsers = await userServices.getAllUsers('Dukun Cuaca');
     if (!listUsers?.data?.length) throw new Error('There are no users');
 
     await Promise.all(
       listUsers.data.map(async (user) => {
         try {
-          const result = await services.fetchWeather(user);
+          const result = await dukunCuacaServices.fetchWeather(user);
 
           const userLocation = user.location;
           const dateNowStamps = Math.floor(new Date().getTime() / 1000);
@@ -33,7 +34,7 @@ async function dukunCuacaController(bot, req, res) {
               }),
           };
 
-          const text = services.generateTextDukunCuaca(resultMap, userLocation, dateNow);
+          const text = dukunCuacaServices.generateTextDukunCuaca(resultMap, userLocation, dateNow);
           await bot.sendMessage(user.chat_id, text, { parse_mode: 'Markdown' });
         } catch (error) {
           console.error(`${user.username} cannot send: ${error.message}`);

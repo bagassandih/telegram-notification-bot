@@ -27,11 +27,14 @@ async function getAllDataUsers(typeMessage) {
   const settingType = settingMap[typeMessage];
   if (!settingType) throw new Error('Invalid setting, need type of message');
 
-  return await supabase
+  let query = supabase
     .from(tableChatId)
     .select('*')
     .eq(`settings->>${settingType}`, true)
-    .not('location->timeZone', 'is', null); 
+    
+  if (settingType === 'dukunCuaca') query = query.not('location->>timeZone', 'is', null);
+  
+  return await query;
 }
 
 // Repository for update users
