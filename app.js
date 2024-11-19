@@ -27,7 +27,11 @@ app.post(`/webhook/${telegramBotToken}`, (req, res) => {
   controllers.webHookController(bot, req, res);
 });
 app.post('/send', (req, res) => {
-  controllers.sendMessageController(bot, req, res)
+  controllers.sendMessageController(bot, req, res);
+});
+
+app.get('/dukun-cuaca', (req, res) => {
+  controllers.dukunCuacaController(bot, req, res);
 });
 
 // Run servers

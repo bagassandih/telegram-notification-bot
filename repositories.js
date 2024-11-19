@@ -9,9 +9,12 @@ const tableChatId = process.env.TABLE_NAME_CHAT_ID;
 
 // Repository for inserting new user
 async function insertDataUser(chatId, username, settings, location) {
-  return await supabase
+  const { data, error } =  await supabase
     .from('chat_ids_telegram')
     .insert({ chat_id: chatId, username: username, settings: settings, location: location});
+
+    if (error) console.error(error.message);
+    return data;
 }
 
 // Repository for getting all data users based on type message
@@ -27,16 +30,27 @@ async function getAllDataUsers(typeMessage) {
   return await supabase
     .from(tableChatId)
     .select('*')
-    .eq(`settings->>${settingType}`, 'true');
+    .eq(`settings->>${settingType}`, true)
+    .not('location->timeZone', 'is', null); 
 }
 
 // Repository for update users
-async function updateDataUser(chatId, username, location) {
-  return await supabase
+async function updateDataUser(chatId, username, updateFields) {
+  // Setup valid input fields
+  const validFields = {};
+
+  for (const [key, value] of Object.entries(updateFields)) {
+    if (value != null && value !== '') validFields[key] = value; 
+  };
+
+  const { data, error} = await supabase
     .from('chat_ids_telegram')
-    .update({ location: location })
+    .update( validFields ) 
     .eq('chat_id', chatId)
     .eq('username', username);
+
+    if (error) console.error(error.message);
+    return data;
 }
 
 // Repository for checking existing user before insert new user
