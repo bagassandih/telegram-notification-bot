@@ -11,10 +11,6 @@
         "src": "/(.*)",
         "dest": "/app.js"
       }
-    ],
-    "crons": [{
-      "path": "/controllers/dukunCuacaController.js",
-      "schedule": "30 4 * * *"
-    }]
+    ]
   }
   
