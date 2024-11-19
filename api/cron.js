@@ -1,5 +1,3 @@
-const { dukunCuacaController } = require('../controllers');
-
 export default function handler(req, res) {
     // Logika cron job Anda di sini
     console.log("Cron job executed!");
