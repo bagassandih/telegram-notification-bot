@@ -6,7 +6,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Import controllers
-const controllers = require('./controllers');
+const { dukunCuacaController } = require('./controllers/dukunCuacaController');
+const botController = require('./controllers/telegramBotController');
 
 // Use middleware
 app.use(cors());
@@ -24,14 +25,14 @@ const webhookUrl = `${publicUrl}${webhookPath}`;
 
 // List endpoints
 app.post(`/webhook/${telegramBotToken}`, (req, res) => {
-  controllers.webHookController(bot, req, res);
+  botController.webHookController(bot, req, res);
 });
 app.post('/send', (req, res) => {
-  controllers.sendMessageController(bot, req, res);
+  botController.sendMessageController(bot, req, res);
 });
 
 app.get('/dukun-cuaca', (req, res) => {
-  controllers.dukunCuacaController(bot, req, res);
+  dukunCuacaController(bot, req, res);
 });
 
 // Run servers
