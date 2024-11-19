@@ -1,4 +1,4 @@
-const repositories = require('../repositories');
+const userRepositories = require('../repositories/userRepositories');
 
 // Get data geolocation from external services
 async function getGeoLocation(latitude, longitude) {
@@ -68,14 +68,14 @@ async function setLocation(bot, msg) {
       remove_keyboard: true,
     },
   });
-  await repositories.updateDataUser(chatId, username, { location: location });
+  await userRepositories.updateDataUser(chatId, username, { location: location });
 
   console.log(`${username} successfully set up location`);
 }
 
 // Getting data chatIds user based on type of message
 async function getAllUsers(typeMessage) {
-  return await repositories.getAllDataUsers(typeMessage);
+  return await userRepositories.getAllDataUsers(typeMessage);
 }
 
 module.exports = {

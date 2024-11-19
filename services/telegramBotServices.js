@@ -1,4 +1,4 @@
-const repositories = require('../repositories');
+const userRepositories = require('../repositories/userRepositories');
 const resources = require('../resources.json');
 
 // Start command for new user
@@ -26,11 +26,11 @@ async function onStart(bot, msg) {
     },
   };
 
-  const { data } = await repositories.checkExistingDataUsers(chatId, username);
+  const { data } = await userRepositories.checkExistingDataUsers(chatId, username);
   if (data) return console.log(`${username} already exists`);
 
   await bot.sendMessage(chatId, text, options);
-  await repositories.insertDataUser(chatId, username, settings, location);
+  await userRepositories.insertDataUser(chatId, username, settings, location);
 
   console.log(`Data ${username} inserted successfully`);
 }
