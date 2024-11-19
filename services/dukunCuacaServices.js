@@ -21,7 +21,7 @@ function generateTextDukunCuaca(resultMap, userLocation, dateNow) {
   text += `${userLocation.county}, ${userLocation.city}, ${userLocation.state}:\n`;
 
   resultMap.list.forEach((day) => {
-    text += `- Jam *${day.time} ${userLocation.timeZoneStd}* kayanya *${day.weather_description}*, suhunya *${day.temp}°*. \n`;
+    text += `- Jam *${day.time}* kayanya *${day.weather_description}*, suhunya *${day.temp}°*. \n`;
   });
 
   const suggestion = utilities.getSuggestion(resultMap.list);
