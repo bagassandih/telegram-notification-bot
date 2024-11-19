@@ -5,3 +5,8 @@ export default function handler(req, res) {
   // Contoh response
   res.status(200).json({ message: 'Cron job executed successfully!' });
 }
+
+export const config = {
+  runtime: 'edge',
+  schedule: '30 4 * * *'
+};
