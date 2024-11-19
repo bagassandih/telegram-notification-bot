@@ -13,7 +13,7 @@
       }
     ],
     "crons": [{
-      "path": "/controllers/dukunCuacaController",
+      "path": "/controllers/dukunCuacaController.js",
       "schedule": "30 4 * * *"
     }]
   }
