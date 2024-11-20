@@ -24,6 +24,9 @@ const webhookPath = `/webhook/${telegramBotToken}`;
 const webhookUrl = `${publicUrl}${webhookPath}`;
 
 // List endpoints
+app.get('/', (req, res) => {
+  res.send('Welcome to Telegram Notification Bot!');
+});
 app.post(`/webhook/${telegramBotToken}`, (req, res) => {
   botController.webHookController(bot, req, res);
 });
