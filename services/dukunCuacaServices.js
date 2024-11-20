@@ -18,7 +18,7 @@ async function fetchWeather(user) {
 function generateTextDukunCuaca(resultMap, userLocation, dateNow) {
   let text = `🌤️ *[Dukun Cuaca]*\n\n`;
   text += `Hari ini tanggal *${dateNow}* \n`;
-  text += `${userLocation.county}, ${userLocation.city}, ${userLocation.state}:\n`;
+  text += `${userLocation.county ?? ''}, ${userLocation.city ?? ''}, ${userLocation.state ?? ''}:\n`;
 
   resultMap.list.forEach((day) => {
     text += `- Jam *${day.time}* kayanya *${day.weather_description}*, suhunya *${day.temp}°*. \n`;
