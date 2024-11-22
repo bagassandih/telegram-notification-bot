@@ -48,13 +48,13 @@ async function setLocation(bot, msg) {
     parameterLocation.longitude
   );
   const location = {
-    longitude: getLocation.features[0].properties.lon ?? '',
-    latitude: getLocation.features[0].properties.lat ?? '',
-    county: getLocation.features[0].properties.county ?? '',
-    state: getLocation.features[0].properties.state ?? '',
-    city: getLocation.features[0].properties.city ?? '',
-    timeZone: getLocation.features[0].properties.timezone.name ?? '',
-    timeZoneStd: getLocation.features[0].properties.timezone.abbreviation_STD ?? '',
+    longitude: getLocation?.features[0]?.properties?.lon ?? '',
+    latitude: getLocation?.features[0]?.properties?.lat ?? '',
+    county: getLocation?.features[0]?.properties?.county ?? '',
+    state: getLocation?.features[0]?.properties?.state ?? '',
+    city: getLocation?.features[0]?.properties?.city ?? '',
+    timeZone: getLocation?.features[0]?.properties?.timezone?.name ?? '',
+    timeZoneStd: getLocation?.features[0]?.properties?.timezone?.abbreviation_STD ?? '',
   };
 
   // Set text for message
