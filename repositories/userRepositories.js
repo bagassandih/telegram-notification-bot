@@ -22,6 +22,7 @@ async function getAllDataUsers(typeMessage) {
   const settingMap = {
     'Auto Faucet': 'autoFaucet',
     'Dukun Cuaca': 'dukunCuaca',
+    'Toko Crypto': 'tokoCrypto'
   };
 
   const settingType = settingMap[typeMessage];
