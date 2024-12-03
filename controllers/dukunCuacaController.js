@@ -35,7 +35,11 @@ async function dukunCuacaController(bot, req, res) {
           };
 
           const text = dukunCuacaServices.generateTextDukunCuaca(resultMap, userLocation, dateNow);
-          await bot.sendMessage(user.chat_id, text, { parse_mode: 'Markdown' });
+          try {
+            await bot.sendMessage(user.chat_id, text, { parse_mode: 'Markdown' });
+          } catch (error) {
+            console.error(`Error sending message to ${user.username}: ${error.message}`);
+          }
         } catch (error) {
           console.error(`${user.username} cannot send: ${error.message}`);
         }
