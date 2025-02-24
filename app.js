@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 // Import controllers
 const { dukunCuacaController } = require('./controllers/dukunCuacaController');
 const botController = require('./controllers/telegramBotController');
+const { recapJournalController } = require('./controllers/recapJournalController');
 
 // Use middleware
 app.use(cors());
@@ -36,6 +37,10 @@ app.post('/send', (req, res) => {
 
 app.get('/dukun-cuaca', (req, res) => {
   dukunCuacaController(bot, req, res);
+});
+
+app.post('/recap-journal', (req, res) => {
+  recapJournalController(req, res);
 });
 
 // Run servers
